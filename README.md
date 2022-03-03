@@ -1,5 +1,5 @@
 # EXvivo beta
-Analysis of human ex vivo tissue (seisures and single units)
+A collection of sctripts to preprocess and analyse intan single file recording from slices
 
 Todo:
 
