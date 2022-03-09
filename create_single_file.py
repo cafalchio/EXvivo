@@ -1,6 +1,5 @@
 from tqdm.auto import tqdm
 import numpy as np
-from glob import glob
 import os
 import gc
 gc.enable()
@@ -31,14 +30,14 @@ def get_good_channels(data_path, amp_names):
             sizes.append(int(os.path.getsize(data_path+filename)/2))
         except:
             print(f'{filename} not exist, create zeros file')
-            np.zeros(max(sizes),dtype=np.int16).tofile(data_path+filename)
+            np.zeros(max(sizes), dtype=np.int16).tofile(data_path+filename)
                 
     sizes = [int(os.path.getsize(data_path+filename)/2) for filename in amp_names]
     size = max(sizes)
     return size, [amp_names[i] for i, sz in enumerate(sizes) if sz==size]
 
 
-def connect_files(data_path, amp_names, chunk_sz=256):
+def connect_files(data_path, amp_names, out_path, chunk_sz=128):
     '''Create a NxM he simplest file format is the raw_binary one. 
         Suppose you have N channels
         c0,c1,...,cN
@@ -53,7 +52,7 @@ def connect_files(data_path, amp_names, chunk_sz=256):
     returns: bad channels
     '''
 
-    out_data = data_path + ''.join(data_path.split('/')[-3:]) + '2.bin'
+    out_data = out_path + ''.join(data_path.split('/')[-3:])+ '.bin'
     size, good_channels = get_good_channels(data_path, amp_names)
     fill_zeros(size, good_channels, data_path, amp_names)
 
@@ -81,8 +80,12 @@ def main():
     ampC_names = [f'amp-C-00{i}.dat' for i in range(0,10)] + [f'amp-C-0{i}.dat' for i in range(10,64)]
     ampD_names = [f'amp-D-00{i}.dat' for i in range(0,10)] + [f'amp-D-0{i}.dat' for i in range(10,64)]
 
-    data_path = '/mnt/g/HUMAN/HUMAN_241/241_slice2/'
-    connect_files(data_path, ampD_names)
+    data_path = r'/mnt/h/HUMAN/HUMAN226/slide1/'
+    connect_files(data_path, ampD_names, out_path=r'/mnt/h/HUMAN/CLUSTER/226/slide1/')
+    # connect_files(data_path, ampB_names, out_path=r'/mnt/h/HUMAN/CLUSTER/226/slide2/')
+    data_path = r'/mnt/h/HUMAN/HUMAN226/slide2/'
+    connect_files(data_path, ampD_names, out_path=r'/mnt/h/HUMAN/CLUSTER/226/slide2/')
+
 
 if __name__ == '__main__':
     # execute only if run as the entry point into the program
