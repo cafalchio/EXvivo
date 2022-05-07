@@ -1,5 +1,5 @@
 # EXvivo beta
-A collection of sctripts to preprocess and analyse intan single file recording from slices
+A collection of sctripts to preprocess and analyse intan single file recording from human brain slices. 
 
 Todo:
 
